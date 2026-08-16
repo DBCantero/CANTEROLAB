@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { saveArticleAction } from "@/app/admin/actions";
+import { ArrowUpRightIcon } from "@/components/ui/icons";
 import {
   ARTICLE_CATEGORIES,
   type ArticleCategorySlug,
@@ -81,12 +82,22 @@ export function AdminEditorForm({
   );
   const [slugTouched, setSlugTouched] = useState(Boolean(article));
   const [activeTab, setActiveTab] = useState<"write" | "preview">("write");
+  const [pendingIntent, setPendingIntent] = useState<"draft" | "publish" | null>(null);
   const [dirty, setDirty] = useState(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
   const resultMessage = result ? resultMessages[result] : undefined;
 
   useEffect(() => {
-    if (state.status === "error") errorSummaryRef.current?.focus();
+    let frame: number | undefined;
+    if (state.status === "error") {
+      errorSummaryRef.current?.focus();
+      if (state.fieldErrors?.body) {
+        frame = window.requestAnimationFrame(() => setActiveTab("write"));
+      }
+    }
+    return () => {
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+    };
   }, [state]);
 
   useEffect(() => {
@@ -110,6 +121,13 @@ export function AdminEditorForm({
       action={action}
       encType="multipart/form-data"
       onChange={() => setDirty(true)}
+      onSubmit={(event) => {
+        const submitter = (event.nativeEvent as SubmitEvent)
+          .submitter as HTMLButtonElement | null;
+        if (submitter?.value === "draft" || submitter?.value === "publish") {
+          setPendingIntent(submitter.value);
+        }
+      }}
     >
       {article ? (
         <>
@@ -120,18 +138,39 @@ export function AdminEditorForm({
       ) : null}
 
       <header className="admin-editor-header">
-        <div>
-          <Link href="/admin">← Todos os artigos</Link>
-          <p className="admin-eyebrow">{article ? "Editar artigo" : "Novo artigo"}</p>
-          <h1>{article ? article.title : "Comece um novo registro."}</h1>
+        <div className="admin-editor-heading">
+          <Link href="/admin">
+            <span aria-hidden="true">←</span>
+            Todos os artigos
+          </Link>
+          <div className="admin-editor-title-row">
+            <div>
+              <p className="admin-eyebrow">Área de escrita</p>
+              <h1>{article ? "Editar artigo" : "Novo artigo"}</h1>
+            </div>
+            <span className={`admin-status ${article?.published ? "is-published" : "is-draft"}`}>
+              {article?.published ? "Publicado" : "Rascunho"}
+            </span>
+          </div>
+          <p className="admin-editor-subtitle">
+            {article
+              ? article.title
+              : "Organize a ideia, revise a prévia e publique quando estiver pronto."}
+          </p>
         </div>
-        <div className="admin-editor-header-actions">
-          {article?.published ? (
-            <Link className="admin-button admin-button-quiet" href={article.href} target="_blank">
-              Ver artigo <span aria-hidden="true">↗</span>
+        {article?.published ? (
+          <div className="admin-editor-header-actions">
+            <Link
+              className="admin-button admin-button-quiet"
+              href={article.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ver no blog
+              <ArrowUpRightIcon />
             </Link>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </header>
 
       {resultMessage ? (
@@ -158,15 +197,15 @@ export function AdminEditorForm({
           <section className="admin-form-section" aria-labelledby="content-heading">
             <div className="admin-form-section-heading">
               <div>
-                <span>01</span>
                 <h2 id="content-heading">Conteúdo</h2>
               </div>
               <p>O título e a descrição aparecem nos cards e buscadores.</p>
             </div>
 
-            <label className="admin-field">
+            <label className="admin-field admin-title-field">
               <span>Título</span>
               <input
+                id="article-title"
                 name="title"
                 value={title}
                 onChange={(event) => handleTitle(event.target.value)}
@@ -182,6 +221,7 @@ export function AdminEditorForm({
             <label className="admin-field">
               <span>Descrição</span>
               <textarea
+                id="article-description"
                 name="description"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
@@ -189,62 +229,106 @@ export function AdminEditorForm({
                 maxLength={240}
                 required
                 aria-invalid={Boolean(state.fieldErrors?.description)}
-                aria-describedby={state.fieldErrors?.description ? "description-error" : "description-help"}
+                aria-describedby={
+                  state.fieldErrors?.description
+                    ? "description-help description-error"
+                    : "description-help"
+                }
                 placeholder="Resuma o problema e o que o leitor vai aprender."
               />
               <small id="description-help">{description.length}/240 caracteres</small>
               <FieldError id="description-error" errors={state.fieldErrors?.description} />
             </label>
 
-            <div className="admin-editor-tabs" aria-label="Visualização do conteúdo">
+            <div
+              className="admin-editor-tabs"
+              role="tablist"
+              aria-label="Visualização do conteúdo"
+              onKeyDown={(event) => {
+                if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+                event.preventDefault();
+                const nextTab = activeTab === "write" ? "preview" : "write";
+                setActiveTab(nextTab);
+                document.getElementById(`${nextTab}-tab`)?.focus();
+              }}
+            >
               <button
+                id="write-tab"
+                role="tab"
                 type="button"
                 className={activeTab === "write" ? "is-active" : undefined}
                 onClick={() => setActiveTab("write")}
-                aria-pressed={activeTab === "write"}
+                aria-selected={activeTab === "write"}
+                aria-controls="write-panel"
+                tabIndex={activeTab === "write" ? 0 : -1}
               >
                 Escrever
               </button>
               <button
+                id="preview-tab"
+                role="tab"
                 type="button"
                 className={activeTab === "preview" ? "is-active" : undefined}
                 onClick={() => setActiveTab("preview")}
-                aria-pressed={activeTab === "preview"}
+                aria-selected={activeTab === "preview"}
+                aria-controls="preview-panel"
+                tabIndex={activeTab === "preview" ? 0 : -1}
               >
                 Pré-visualizar
               </button>
             </div>
 
             {activeTab === "write" ? (
-              <label className="admin-field admin-content-field">
-                <span className="sr-only">Conteúdo em Markdown</span>
-                <textarea
-                  name="body"
-                  value={body}
-                  onChange={(event) => setBody(event.target.value)}
-                  rows={24}
-                  maxLength={120000}
-                  required
-                  spellCheck
-                  aria-invalid={Boolean(state.fieldErrors?.body)}
-                  aria-describedby="body-help body-error"
-                  placeholder={"Escreva a introdução...\n\n## Primeiro tópico\n\nDesenvolva o conteúdo aqui."}
-                />
-                <small id="body-help">
-                  Markdown, tabelas, código e &lt;Callout title=&quot;Nota&quot;&gt; são aceitos.
-                </small>
-                <FieldError id="body-error" errors={state.fieldErrors?.body} />
-              </label>
-            ) : (
-              <div className="admin-preview article-content">
-                {body.trim() ? (
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {calloutsAsMarkdown(body)}
-                  </ReactMarkdown>
-                ) : (
-                  <p className="admin-preview-empty">A prévia aparecerá quando você começar a escrever.</p>
-                )}
+              <div
+                id="write-panel"
+                role="tabpanel"
+                aria-labelledby="write-tab"
+              >
+                <label className="admin-field admin-content-field">
+                  <span className="sr-only">Conteúdo em Markdown</span>
+                  <textarea
+                    id="article-body"
+                    name="body"
+                    value={body}
+                    onChange={(event) => setBody(event.target.value)}
+                    rows={24}
+                    maxLength={120000}
+                    required
+                    spellCheck
+                    aria-invalid={Boolean(state.fieldErrors?.body)}
+                    aria-describedby={
+                      state.fieldErrors?.body
+                        ? "body-help body-error"
+                        : "body-help"
+                    }
+                    placeholder={"Escreva a introdução...\n\n## Primeiro tópico\n\nDesenvolva o conteúdo aqui."}
+                  />
+                  <small id="body-help">
+                    Markdown, tabelas, código e &lt;Callout title=&quot;Nota&quot;&gt; são aceitos.
+                  </small>
+                  <FieldError id="body-error" errors={state.fieldErrors?.body} />
+                </label>
               </div>
+            ) : (
+              <>
+                <input type="hidden" name="body" value={body} />
+                <div
+                  className="admin-preview article-content"
+                  id="preview-panel"
+                  role="tabpanel"
+                  aria-labelledby="preview-tab"
+                >
+                  {body.trim() ? (
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {calloutsAsMarkdown(body)}
+                    </ReactMarkdown>
+                  ) : (
+                    <p className="admin-preview-empty">
+                      A prévia aparecerá quando você começar a escrever.
+                    </p>
+                  )}
+                </div>
+              </>
             )}
           </section>
         </div>
@@ -252,7 +336,7 @@ export function AdminEditorForm({
         <aside className="admin-editor-aside" aria-label="Configurações da publicação">
           <section className="admin-form-section">
             <div className="admin-form-section-heading compact">
-              <div><span>02</span><h2>Publicação</h2></div>
+              <div><h2>Publicação</h2></div>
             </div>
 
             <label className="admin-field">
@@ -260,7 +344,15 @@ export function AdminEditorForm({
               {article ? (
                 <>
                   <input type="hidden" name="categorySlug" value={article.categorySlug} />
-                  <select value={article.categorySlug} disabled aria-label="Categoria bloqueada">
+                  <select
+                    value={article.categorySlug}
+                    disabled
+                    aria-label="Categoria bloqueada"
+                    aria-invalid={Boolean(state.fieldErrors?.categorySlug)}
+                    aria-describedby={
+                      state.fieldErrors?.categorySlug ? "category-error" : undefined
+                    }
+                  >
                     {ARTICLE_CATEGORIES.map((category) => (
                       <option key={category.slug} value={category.slug}>{category.label}</option>
                     ))}
@@ -274,6 +366,10 @@ export function AdminEditorForm({
                     setCategorySlug(event.target.value as ArticleCategorySlug)
                   }
                   required
+                  aria-invalid={Boolean(state.fieldErrors?.categorySlug)}
+                  aria-describedby={
+                    state.fieldErrors?.categorySlug ? "category-error" : undefined
+                  }
                 >
                   {ARTICLE_CATEGORIES.map((category) => (
                     <option key={category.slug} value={category.slug}>{category.label}</option>
@@ -286,6 +382,7 @@ export function AdminEditorForm({
             <label className="admin-field">
               <span>Endereço do artigo</span>
               <input
+                id="article-slug"
                 name="slug"
                 value={slug}
                 onChange={(event) => {
@@ -295,7 +392,9 @@ export function AdminEditorForm({
                 readOnly={Boolean(article)}
                 required
                 aria-invalid={Boolean(state.fieldErrors?.slug)}
-                aria-describedby="slug-help slug-error"
+                aria-describedby={
+                  state.fieldErrors?.slug ? "slug-help slug-error" : "slug-help"
+                }
               />
               <small id="slug-help">/artigos/{categorySlug}/{slug || "seu-artigo"}</small>
               <FieldError id="slug-error" errors={state.fieldErrors?.slug} />
@@ -304,32 +403,69 @@ export function AdminEditorForm({
             <div className="admin-field-row">
               <label className="admin-field">
                 <span>Data</span>
-                <input name="date" type="date" defaultValue={article?.date ?? today} required />
+                <input
+                  id="article-date"
+                  name="date"
+                  type="date"
+                  defaultValue={article?.date ?? today}
+                  required
+                  aria-invalid={Boolean(state.fieldErrors?.date)}
+                  aria-describedby={state.fieldErrors?.date ? "date-error" : undefined}
+                />
+                <FieldError id="date-error" errors={state.fieldErrors?.date} />
               </label>
               <label className="admin-field">
                 <span>Tempo de leitura</span>
-                <input name="readingTime" defaultValue={article?.readingTime ?? "5 min"} required />
+                <input
+                  id="article-reading-time"
+                  name="readingTime"
+                  defaultValue={article?.readingTime ?? "5 min"}
+                  placeholder="5 min"
+                  pattern="[0-9]{1,3}[ ]+min"
+                  required
+                  aria-invalid={Boolean(state.fieldErrors?.readingTime)}
+                  aria-describedby={
+                    state.fieldErrors?.readingTime
+                      ? "reading-time-help reading-time-error"
+                      : "reading-time-help"
+                  }
+                />
+                <small id="reading-time-help">Use o formato “5 min”.</small>
+                <FieldError
+                  id="reading-time-error"
+                  errors={state.fieldErrors?.readingTime}
+                />
               </label>
             </div>
 
             <label className="admin-field">
               <span>Atualizado em <small>(opcional)</small></span>
               <input
+                id="article-updated"
                 name="updated"
                 type="date"
                 defaultValue={
                   article?.updated ?? (article?.published ? today : "")
                 }
+                aria-invalid={Boolean(state.fieldErrors?.updated)}
+                aria-describedby={
+                  state.fieldErrors?.updated ? "updated-error" : undefined
+                }
               />
+              <FieldError id="updated-error" errors={state.fieldErrors?.updated} />
             </label>
 
             <label className="admin-field">
               <span>Tags</span>
               <input
+                id="article-tags"
                 name="tags"
                 defaultValue={article?.tags.join(", ") ?? ""}
                 required
-                aria-describedby="tags-help tags-error"
+                aria-invalid={Boolean(state.fieldErrors?.tags)}
+                aria-describedby={
+                  state.fieldErrors?.tags ? "tags-help tags-error" : "tags-help"
+                }
                 placeholder="Performance, SQL, Índices"
               />
               <small id="tags-help">Separe as tags por vírgulas.</small>
@@ -347,7 +483,7 @@ export function AdminEditorForm({
 
           <section className="admin-form-section">
             <div className="admin-form-section-heading compact">
-              <div><span>03</span><h2>Imagem social</h2></div>
+              <div><h2>Imagem social</h2></div>
             </div>
             <label className="admin-field admin-file-field">
               <span>JPG, PNG ou WebP</span>
@@ -355,7 +491,12 @@ export function AdminEditorForm({
                 name="socialImage"
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
-                aria-describedby="image-help image-error"
+                aria-invalid={Boolean(state.fieldErrors?.socialImage)}
+                aria-describedby={
+                  state.fieldErrors?.socialImage
+                    ? "image-help image-error"
+                    : "image-help"
+                }
               />
               <small id="image-help">
                 Até 3 MB. A imagem será recortada para 1200 × 630 e usada ao compartilhar o artigo.
@@ -368,28 +509,58 @@ export function AdminEditorForm({
       </div>
 
       <div className="admin-action-bar">
-        <p aria-live="polite">
-          {pending ? "Validando e salvando…" : dirty ? "Alterações não salvas" : "Tudo salvo"}
-        </p>
-        <div>
-          <button
-            className="admin-button admin-button-secondary"
-            type="submit"
-            name="intent"
-            value="draft"
-            disabled={pending}
-          >
-            {article?.published ? "Mover para rascunho" : "Salvar rascunho"}
-          </button>
-          <button
-            className="admin-button admin-button-primary"
-            type="submit"
-            name="intent"
-            value="publish"
-            disabled={pending}
-          >
-            {pending ? "Salvando…" : article?.published ? "Atualizar publicação" : "Publicar"}
-          </button>
+        <div className="admin-action-bar-inner">
+          <p aria-live="polite">
+            <span
+              className={
+                pending
+                  ? "is-pending"
+                  : dirty
+                    ? "is-dirty"
+                    : article
+                      ? "is-saved"
+                      : "is-neutral"
+              }
+              aria-hidden="true"
+            />
+            {pending
+              ? pendingIntent === "draft"
+                ? "Salvando rascunho…"
+                : "Enviando publicação…"
+              : dirty
+                ? "Alterações não salvas"
+                : article
+                  ? "Nenhuma alteração pendente"
+                  : "Novo artigo ainda não salvo"}
+          </p>
+          <div className="admin-action-buttons">
+            <button
+              className={`admin-button ${article?.published ? "admin-button-warning" : "admin-button-secondary"}`}
+              type="submit"
+              name="intent"
+              value="draft"
+              disabled={pending}
+            >
+              {pending && pendingIntent === "draft"
+                ? "Salvando…"
+                : article?.published
+                  ? "Mover para rascunho"
+                  : "Salvar rascunho"}
+            </button>
+            <button
+              className="admin-button admin-button-primary"
+              type="submit"
+              name="intent"
+              value="publish"
+              disabled={pending}
+            >
+              {pending && pendingIntent === "publish"
+                ? "Publicando…"
+                : article?.published
+                  ? "Atualizar publicação"
+                  : "Publicar"}
+            </button>
+          </div>
         </div>
       </div>
     </form>

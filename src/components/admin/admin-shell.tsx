@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 import { logoutAdminAction } from "@/app/admin/actions";
+import { AdminNavigation } from "@/components/admin/admin-navigation";
 import { BrandLogo } from "@/components/ui/brand-logo";
+import { ArrowUpRightIcon, LogOutIcon } from "@/components/ui/icons";
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
@@ -9,43 +11,41 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <a className="skip-link" href="#admin-content">
         Pular para o conteúdo
       </a>
-      <aside className="admin-sidebar">
-        <div>
-          <Link className="admin-brand" href="/admin">
-            <BrandLogo />
-          </Link>
-          <p>Painel editorial</p>
-        </div>
-        <nav aria-label="Navegação administrativa">
-          <Link href="/admin">Artigos</Link>
-          <Link href="/admin/artigos/novo">Novo artigo</Link>
-        </nav>
-        <div className="admin-sidebar-footer">
-          <Link href="/" target="_blank">
-            Ver blog <span aria-hidden="true">↗</span>
-          </Link>
-          <form action={logoutAdminAction}>
-            <button type="submit">Sair</button>
-          </form>
-        </div>
-      </aside>
-      <div className="admin-workspace">
-        <header className="admin-mobile-header">
+      <header className="admin-topbar">
+        <div className="admin-topbar-inner">
           <Link
             aria-label="CanteroLab — painel editorial"
             className="admin-brand"
             href="/admin"
           >
-            <BrandLogo markOnly />
+            <BrandLogo />
+            <span className="admin-brand-context" aria-hidden="true">
+              Editor
+            </span>
           </Link>
-          <nav aria-label="Atalhos administrativos">
-            <Link href="/admin">Artigos</Link>
-            <Link href="/admin/artigos/novo">Novo</Link>
+
+          <AdminNavigation />
+
+          <div className="admin-topbar-actions">
+            <Link
+              aria-label="Ver blog"
+              href="/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <ArrowUpRightIcon />
+              <span>Ver blog</span>
+            </Link>
             <form action={logoutAdminAction}>
-              <button type="submit">Sair</button>
+              <button type="submit" aria-label="Sair">
+                <LogOutIcon />
+                <span>Sair</span>
+              </button>
             </form>
-          </nav>
-        </header>
+          </div>
+        </div>
+      </header>
+      <div className="admin-workspace">
         <main className="admin-content" id="admin-content">
           {children}
         </main>
