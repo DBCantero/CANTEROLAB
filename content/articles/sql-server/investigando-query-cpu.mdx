@@ -1,0 +1,79 @@
+---
+title: "Investigando uma query que estava consumindo CPU"
+description: "Uma análise do problema, dos testes realizados e dos sinais que ajudaram a encontrar o gargalo."
+date: "2026-05-15"
+updated: "2026-05-18"
+category: "SQL Server"
+tags:
+  - Performance
+  - Query Store
+  - Índices
+published: true
+featured: true
+readingTime: "6 min"
+---
+
+Quando o consumo de CPU sobe, a primeira suspeita costuma ser a última mudança feita no ambiente. Nem sempre ela é a culpada. O caminho mais seguro é transformar a suspeita em evidência.
+
+## Sumário
+
+## O problema
+
+Uma consulta executada muitas vezes ao longo do dia passou a responder mais devagar. Isoladamente ela parecia barata; somado o volume, o custo ficou relevante.
+
+<Callout title="Ponto de partida">
+  Antes de alterar índice ou código, guarde o plano de execução e uma linha de base. Sem isso, fica difícil provar que a mudança ajudou.
+</Callout>
+
+## Investigação
+
+Comecei olhando as consultas com maior consumo acumulado. Esta consulta ajuda a montar uma primeira lista de candidatos:
+
+```sql
+SELECT TOP (20)
+    qs.total_worker_time / 1000 AS total_cpu_ms,
+    qs.execution_count,
+    (qs.total_worker_time / NULLIF(qs.execution_count, 0)) / 1000 AS avg_cpu_ms,
+    SUBSTRING(
+        st.text,
+        (qs.statement_start_offset / 2) + 1,
+        ((CASE qs.statement_end_offset
+            WHEN -1 THEN DATALENGTH(st.text)
+            ELSE qs.statement_end_offset
+        END - qs.statement_start_offset) / 2) + 1
+    ) AS statement_text
+FROM sys.dm_exec_query_stats AS qs
+CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) AS st
+ORDER BY qs.total_worker_time DESC;
+```
+
+O custo acumulado revelou algo que o teste pontual escondia: muitas leituras lógicas repetidas por milhares de execuções.
+
+## Hipóteses e testes
+
+| Hipótese | Como testar | Sinal esperado |
+| --- | --- | --- |
+| Plano inadequado | Comparar planos no Query Store | Regressão após troca de plano |
+| Índice insuficiente | Medir leituras com `STATISTICS IO` | Scan ou muitas leituras |
+| Parâmetro atípico | Testar distribuições diferentes | Grande variação entre execuções |
+
+```sql
+SET STATISTICS IO, TIME ON;
+
+EXEC dbo.BuscarPedidos @ClienteId = 1042;
+
+SET STATISTICS IO, TIME OFF;
+```
+
+## Resultado
+
+A combinação do plano de execução com as leituras lógicas indicou onde investigar. A correção deve ser escolhida só depois de comparar alternativas — reescrever a consulta, ajustar o índice ou estabilizar o plano têm impactos diferentes.
+
+## O que vale guardar
+
+- CPU total e CPU média contam histórias diferentes.
+- Um plano “barato” pode custar caro quando executado em grande volume.
+- Query Store, plano de execução e `STATISTICS IO` funcionam melhor juntos.
+- Toda mudança precisa de medição antes e depois.
+
+O diagnóstico fica mais confiável quando começa com uma pergunta pequena: **onde o banco está gastando trabalho, e com que frequência?**

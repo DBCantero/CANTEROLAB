@@ -1,0 +1,70 @@
+---
+title: "Primeiros aprendizados com ASP.NET"
+description: "Notas sobre rotas, injeção de dependência e respostas HTTP ao construir uma primeira API."
+date: "2026-05-08"
+category: "C#"
+tags:
+  - ASP.NET Core
+  - API
+  - C#
+published: true
+featured: false
+readingTime: "7 min"
+---
+
+Construir uma API pequena é uma boa forma de entender como as peças do ASP.NET Core se conectam. O framework resolve bastante coisa, mas fica muito mais útil quando cada decisão deixa de parecer mágica.
+
+## O menor caminho útil
+
+Uma Minimal API permite começar com poucas linhas e ainda exercitar roteamento, contratos e injeção de dependência.
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<WeatherService>();
+
+var app = builder.Build();
+
+app.MapGet("/weather/{city}", async (
+    string city,
+    WeatherService service,
+    CancellationToken cancellationToken) =>
+{
+    var weather = await service.GetAsync(city, cancellationToken);
+
+    return weather is null
+        ? Results.NotFound(new { message = "Cidade não encontrada." })
+        : Results.Ok(weather);
+});
+
+app.Run();
+```
+
+## Três aprendizados iniciais
+
+### A rota também é um contrato
+
+Nome, verbo HTTP, parâmetros e respostas fazem parte da experiência de quem consome a API. O endpoint precisa comunicar intenção antes mesmo de alguém abrir o código.
+
+### Dependências devem aparecer
+
+Receber o serviço como parâmetro deixa claro o que o endpoint usa e facilita substituí-lo em testes. O contêiner não é um lugar para esconder acoplamento.
+
+### Respostas específicas ajudam
+
+Retornar `404` quando o recurso não existe é mais informativo do que responder `200` com um objeto vazio. Status e corpo trabalham juntos.
+
+<Callout title="Ainda explorando">
+  Minimal APIs são ótimas para começar, mas organização, validação e observabilidade precisam crescer junto com a aplicação.
+</Callout>
+
+## O que testar em seguida
+
+- validação de entrada;
+- tratamento centralizado de erros;
+- documentação com OpenAPI;
+- testes de integração;
+- logs estruturados;
+- cancelamento de requisições.
+
+O mais valioso nessa primeira API não é a quantidade de endpoints. É conseguir explicar por que cada peça existe e o que acontece quando algo falha.

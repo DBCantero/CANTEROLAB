@@ -1,0 +1,63 @@
+---
+title: "Automatizando uma tarefa repetitiva com Python"
+description: "Como um script pequeno pode tirar etapas manuais do caminho sem virar um sistema difícil de manter."
+date: "2026-05-12"
+category: "Python"
+tags:
+  - Automação
+  - Scripts
+  - CSV
+published: true
+featured: false
+readingTime: "5 min"
+---
+
+Nem toda automação precisa nascer como uma plataforma. Às vezes, um script curto, previsível e bem documentado já devolve horas para a semana.
+
+## A tarefa
+
+O fluxo era simples: receber arquivos CSV, validar as colunas esperadas e separar os registros que precisavam de revisão. O risco estava na repetição manual e nas pequenas diferenças entre arquivos.
+
+## Uma primeira versão
+
+```python
+from pathlib import Path
+import csv
+
+COLUNAS_OBRIGATORIAS = {"id", "data", "status"}
+
+
+def validar_arquivo(caminho: Path) -> list[str]:
+    with caminho.open(encoding="utf-8-sig", newline="") as arquivo:
+        leitor = csv.DictReader(arquivo)
+        colunas = set(leitor.fieldnames or [])
+
+        ausentes = COLUNAS_OBRIGATORIAS - colunas
+        if ausentes:
+            return [f"Colunas ausentes: {', '.join(sorted(ausentes))}"]
+
+        return [
+            linha["id"]
+            for linha in leitor
+            if linha["status"].strip().lower() == "revisar"
+        ]
+```
+
+O objetivo desta versão não é cobrir todos os casos. É tornar explícitas as regras que antes estavam apenas na cabeça de quem executava a tarefa.
+
+<Callout title="Regra prática">
+  Comece automatizando o caminho feliz e as falhas mais comuns. Observe o uso real antes de construir uma abstração maior.
+</Callout>
+
+## Cuidados que fizeram diferença
+
+1. **Não sobrescrever a entrada.** A saída vai para outro diretório.
+2. **Falhar com contexto.** O erro informa qual arquivo e qual regra falhou.
+3. **Permitir repetição.** Rodar duas vezes produz o mesmo resultado.
+4. **Registrar o essencial.** Início, fim, quantidade processada e falhas.
+
+## Próximo passo
+
+Depois de validar o processo, dá para adicionar testes e agendamento. Só então vale decidir se o script continuará como CLI ou se realmente precisa virar um serviço.
+
+Uma boa automação não é a que usa mais ferramentas. É a que deixa a rotina mais simples sem criar uma nova fonte de ansiedade.
