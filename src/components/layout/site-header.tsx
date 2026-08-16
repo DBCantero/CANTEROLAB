@@ -9,6 +9,7 @@ import {
   GithubIcon,
   MenuIcon,
 } from "@/components/ui/icons";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +44,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="site-header-inner">
         <Link className="brand" href="/" aria-label="CanteroLab — página inicial">
-          CANTEROLAB<span aria-hidden="true">_</span>
+          <BrandLogo />
         </Link>
 
         <nav className="desktop-nav" aria-label="Navegação principal">

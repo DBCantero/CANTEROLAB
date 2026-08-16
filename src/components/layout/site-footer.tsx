@@ -5,6 +5,7 @@ import {
   LinkedinIcon,
   MailIcon,
 } from "@/components/ui/icons";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { Container } from "@/components/ui/container";
 import { siteConfig } from "@/config/site";
 
@@ -28,8 +29,8 @@ export function SiteFooter() {
       <Container>
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link className="brand" href="/">
-              CANTEROLAB<span aria-hidden="true">_</span>
+            <Link className="brand" href="/" aria-label="CanteroLab — página inicial">
+              <BrandLogo />
             </Link>
             <p>Código, dados e experiências do dia a dia.</p>
           </div>

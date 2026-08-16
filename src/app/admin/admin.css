@@ -73,7 +73,12 @@
   letter-spacing: 0.11em;
 }
 
-.admin-brand span {
+.admin-brand .brand-logo-mark {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.admin-brand .brand-logo-mark-accent {
   color: var(--accent);
 }
 

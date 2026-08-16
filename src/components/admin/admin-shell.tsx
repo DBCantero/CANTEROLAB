@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { logoutAdminAction } from "@/app/admin/actions";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +12,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <aside className="admin-sidebar">
         <div>
           <Link className="admin-brand" href="/admin">
-            CANTEROLAB<span aria-hidden="true">_</span>
+            <BrandLogo />
           </Link>
           <p>Painel editorial</p>
         </div>
@@ -30,8 +31,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </aside>
       <div className="admin-workspace">
         <header className="admin-mobile-header">
-          <Link className="admin-brand" href="/admin">
-            CANTEROLAB<span aria-hidden="true">_</span>
+          <Link
+            aria-label="CanteroLab — painel editorial"
+            className="admin-brand"
+            href="/admin"
+          >
+            <BrandLogo markOnly />
           </Link>
           <nav aria-label="Atalhos administrativos">
             <Link href="/admin">Artigos</Link>

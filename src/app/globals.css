@@ -154,8 +154,34 @@ button {
   letter-spacing: 0.11em;
 }
 
-.brand span {
+.brand-logo {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.brand-logo-mark {
+  width: 1.95rem;
+  height: 1.95rem;
+  flex: 0 0 auto;
+}
+
+.brand-logo-mark-accent {
   color: var(--accent);
+}
+
+.brand-logo-wordmark {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.brand-logo-mark-accent {
+  transition: color 160ms ease;
+}
+
+.brand:hover .brand-logo-mark-accent {
+  color: var(--accent-hover);
 }
 
 .desktop-nav {

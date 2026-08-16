@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#070A0F"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64" role="img" aria-labelledby="title">
+  <title id="title">CanteroLab</title>
   <path d="M30.5 14.5a17.5 17.5 0 1 0 0 35" fill="none" stroke="#F4F7FA" stroke-width="6.5" stroke-linecap="round"/>
   <path d="M38 14.5v30h15" fill="none" stroke="#F4F7FA" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M47 52.5h11" fill="none" stroke="#2F8FFF" stroke-width="4.5" stroke-linecap="round"/>
+  <text x="76" y="40" fill="#F4F7FA" font-family="Consolas, 'Courier New', monospace" font-size="20" font-weight="700" letter-spacing="2.2">CANTEROLAB</text>
 </svg>

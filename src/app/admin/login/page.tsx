@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { GithubIcon } from "@/components/ui/icons";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { isAdminAuthConfigured } from "@/lib/admin/config";
 import { getAdminSession } from "@/lib/admin/session";
 
@@ -27,7 +28,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
     <main className="admin-login-page" id="conteudo">
       <section className="admin-login-panel" aria-labelledby="admin-login-title">
         <Link className="admin-brand" href="/">
-          CANTEROLAB<span aria-hidden="true">_</span>
+          <BrandLogo />
         </Link>
         <p className="admin-eyebrow">Painel editorial</p>
         <h1 id="admin-login-title">Entre para administrar o blog.</h1>

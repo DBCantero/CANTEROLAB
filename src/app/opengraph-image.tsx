@@ -15,8 +15,8 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 80px",
-          background: "#070b10",
-          color: "#f2f4f7",
+          background: "#070A0F",
+          color: "#F4F7FA",
           fontFamily: "Arial, sans-serif",
         }}
       >
@@ -29,9 +29,32 @@ export default function OpenGraphImage() {
             paddingBottom: "28px",
           }}
         >
-          <span style={{ fontSize: 25, fontWeight: 700, letterSpacing: "0.11em" }}>
-            CANTEROLAB<span style={{ color: "#258cf4" }}>_</span>
-          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <svg width="52" height="52" viewBox="0 0 64 64" fill="none">
+              <path
+                d="M30.5 14.5a17.5 17.5 0 1 0 0 35"
+                stroke="#F4F7FA"
+                strokeLinecap="round"
+                strokeWidth="6.5"
+              />
+              <path
+                d="M38 14.5v30h15"
+                stroke="#F4F7FA"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="6.5"
+              />
+              <path
+                d="M47 52.5h11"
+                stroke="#2F8FFF"
+                strokeLinecap="round"
+                strokeWidth="4.5"
+              />
+            </svg>
+            <span style={{ fontSize: 25, fontWeight: 700, letterSpacing: "0.11em" }}>
+              CANTEROLAB
+            </span>
+          </div>
           <span style={{ color: "#7f8b97", fontFamily: "monospace", fontSize: 18 }}>
             cantero@lab:~
           </span>
@@ -40,7 +63,7 @@ export default function OpenGraphImage() {
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 920 }}>
           <span
             style={{
-              color: "#64b5ff",
+              color: "#62AEFF",
               fontFamily: "monospace",
               fontSize: 19,
               marginBottom: 18,

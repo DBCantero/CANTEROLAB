@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Código, dados e experiências do dia a dia em um laboratório pessoal.",
     start_url: "/",
     display: "standalone",
-    background_color: "#070b10",
-    theme_color: "#070b10",
+    background_color: "#070A0F",
+    theme_color: "#070A0F",
     lang: "pt-BR",
     icons: [
       {
