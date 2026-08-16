@@ -105,7 +105,7 @@ export function getAdminSessionCookie(userId: string) {
     maxAge: SESSION_SECONDS,
     path: "/",
     priority: "high",
-    sameSite: "strict",
+    sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
   } as const;
 }
