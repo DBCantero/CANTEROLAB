@@ -62,11 +62,8 @@ export default function AboutPage() {
                 alt="Retrato de Alef Cantero"
                 width={460}
                 height={460}
-                sizes="(max-width: 1023px) calc(100vw - 40px), 448px"
+                sizes="(max-width: 345px) 200px, (max-width: 414px) 58vw, 240px"
               />
-              <span className="about-portrait-label" aria-hidden="true">
-                AUTHOR_01
-              </span>
             </div>
             <figcaption className="about-author-caption">
               <span>Autor do CanteroLab</span>

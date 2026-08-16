@@ -1520,48 +1520,39 @@ button {
 
 .about-author-card {
   width: 100%;
-  max-width: 28rem;
+  max-width: 20rem;
   min-width: 0;
   margin: 0;
-  overflow: hidden;
-  border: 1px solid var(--border-strong);
-  border-radius: 1rem;
-  background: var(--surface);
-  box-shadow: 0 2rem 5rem rgb(0 0 0 / 22%);
+  justify-self: center;
+  text-align: center;
 }
 
 .about-portrait-frame {
   position: relative;
+  width: clamp(12.5rem, 58vw, 15rem);
   overflow: hidden;
   aspect-ratio: 1;
-  border-bottom: 1px solid var(--border);
+  margin-inline: auto;
+  border: 3px solid var(--border-strong);
+  border-radius: 50%;
   background: var(--surface-raised);
+  box-shadow:
+    0 0 0 0.4rem var(--background),
+    0 0 0 0.5rem color-mix(in srgb, var(--accent) 48%, var(--border)),
+    0 1.5rem 4rem rgb(0 0 0 / 28%);
 }
 
 .about-portrait {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
-}
-
-.about-portrait-label {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  border: 1px solid rgb(244 247 250 / 20%);
-  border-radius: 999px;
-  background: rgb(7 10 15 / 82%);
-  color: var(--foreground);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  line-height: 1;
-  padding: 0.55rem 0.7rem;
 }
 
 .about-author-caption {
   display: grid;
-  padding: 1.4rem 1.5rem 1.55rem;
+  justify-items: center;
+  padding: 1.7rem 0 0;
 }
 
 .about-author-caption > span {
