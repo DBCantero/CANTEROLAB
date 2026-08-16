@@ -116,7 +116,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <h1>{article.title}</h1>
             <p className="article-deck">{article.description}</p>
             <div className="article-byline">
-              <span>Por Cantero</span>
+              <span>Por {siteConfig.author}</span>
               <time dateTime={article.date}>{formatDate(article.date)}</time>
               <span>{article.readingTime} de leitura</span>
             </div>

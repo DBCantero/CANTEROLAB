@@ -72,7 +72,7 @@ export function SiteHeader() {
               href={siteConfig.links.github}
               target="_blank"
               rel="noreferrer"
-              aria-label="GitHub de Cantero — abre em nova aba"
+              aria-label={`GitHub de ${siteConfig.author} — abre em nova aba`}
             >
               <GithubIcon />
             </a>

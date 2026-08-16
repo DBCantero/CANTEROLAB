@@ -8,7 +8,7 @@ export const siteUrl = (
 export const siteConfig = {
   name: "CANTEROLAB_",
   shortName: "CanteroLab",
-  author: "Cantero",
+  author: "Alef Cantero",
   title: "CanteroLab — Código, dados e experiências do dia a dia",
   description:
     "Um laboratório pessoal sobre SQL Server, banco de dados, Python, C#, .NET, automação e tudo o que aparece pelo caminho.",

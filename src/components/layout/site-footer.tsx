@@ -66,7 +66,10 @@ export function SiteFooter() {
         </div>
 
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} Cantero. Feito com código e café.</p>
+          <p>
+            © {new Date().getFullYear()} {siteConfig.author}. Feito com código e
+            café.
+          </p>
           <code aria-label="Aprendendo e construindo">
             echo &quot;aprendendo &amp;&amp; construindo&quot;
           </code>

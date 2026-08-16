@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArticleCover } from "@/components/articles/article-cover";
 import { Container } from "@/components/ui/container";
 import { ArrowRightIcon } from "@/components/ui/icons";
+import { siteConfig } from "@/config/site";
 import type { Article } from "@/lib/articles";
 import { formatDate } from "@/lib/utils";
 
@@ -22,7 +23,7 @@ export function Hero({ articles }: { articles: Article[] }) {
               Investigações, tutoriais e aprendizados sobre SQL Server,
               Python, C# e automação — sempre a partir da prática.
             </p>
-            <span>Por Cantero, DBA e desenvolvedor.</span>
+            <span>Por {siteConfig.author}, desenvolvedor de Backend & Dados.</span>
           </div>
         </header>
 

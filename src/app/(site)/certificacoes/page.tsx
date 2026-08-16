@@ -6,7 +6,7 @@ import { formatDate } from "@/lib/utils";
 
 export const metadata = createPageMetadata({
   title: "Certificações",
-  description: "Certificações e trilhas de estudo concluídas por Cantero.",
+  description: "Certificações e trilhas de estudo concluídas por Alef Cantero.",
   path: "/certificacoes",
 });
 

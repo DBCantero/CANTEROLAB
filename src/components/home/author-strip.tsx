@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { ArrowRightIcon } from "@/components/ui/icons";
+import { siteConfig } from "@/config/site";
 
 export function AuthorStrip() {
   return (
@@ -9,7 +10,7 @@ export function AuthorStrip() {
       <Container className="author-strip">
         <div>
           <p className="blog-section-kicker">Quem escreve</p>
-          <h2 id="author-heading">Sou Cantero.</h2>
+          <h2 id="author-heading">Sou {siteConfig.author}.</h2>
         </div>
         <p>
           Trabalho com banco de dados e tecnologia e uso este espaço para
