@@ -1274,8 +1274,18 @@ button {
 }
 
 .footer-bottom code {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  padding: 0.3rem 0.65rem;
   color: var(--muted);
   font-family: var(--font-geist-mono), monospace;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  white-space: nowrap;
 }
 
 /* Internal pages */
@@ -1505,6 +1515,21 @@ button {
 
 .content-list-item > .button {
   width: fit-content;
+}
+
+.certification-summary {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.certification-badge {
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  object-fit: contain;
 }
 
 .about-section {

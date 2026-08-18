@@ -172,7 +172,7 @@ export async function validateSafeArticleBody(body: string) {
   }
 }
 
-function zodFieldErrors(error: z.ZodError) {
+export function zodFieldErrors(error: z.ZodError) {
   const fields: Record<string, string[]> = {};
 
   for (const issue of error.issues) {

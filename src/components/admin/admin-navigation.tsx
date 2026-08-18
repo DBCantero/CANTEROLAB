@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { FileTextIcon, PlusIcon } from "@/components/ui/icons";
+import { AwardIcon, FileTextIcon, PlusIcon } from "@/components/ui/icons";
 
 const links = [
   {
@@ -20,6 +20,21 @@ const links = [
     icon: PlusIcon,
     label: "Novo artigo",
     matches: (pathname: string) => pathname === "/admin/artigos/novo",
+  },
+  {
+    href: "/admin/certificacoes",
+    icon: AwardIcon,
+    label: "Certificações",
+    matches: (pathname: string) =>
+      pathname === "/admin/certificacoes" ||
+      (pathname.startsWith("/admin/certificacoes/") &&
+        pathname !== "/admin/certificacoes/novo"),
+  },
+  {
+    href: "/admin/certificacoes/novo",
+    icon: PlusIcon,
+    label: "Novo certificado",
+    matches: (pathname: string) => pathname === "/admin/certificacoes/novo",
   },
 ] as const;
 

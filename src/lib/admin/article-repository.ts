@@ -31,9 +31,9 @@ const ARTICLE_PATH_PATTERN =
 const LOCAL_ARTICLES_ROOT = path.join(process.cwd(), "content", "articles");
 const LOCAL_IMAGES_ROOT = path.join(process.cwd(), "public", "images", "articles");
 
-type GitHubRef = { object: { sha: string } };
-type GitHubCommit = { sha: string; tree: { sha: string } };
-type GitHubTree = {
+export type GitHubRef = { object: { sha: string } };
+export type GitHubCommit = { sha: string; tree: { sha: string } };
+export type GitHubTree = {
   sha: string;
   tree: Array<{
     mode: string;
@@ -43,8 +43,8 @@ type GitHubTree = {
   }>;
   truncated: boolean;
 };
-type GitHubBlob = { content: string; encoding: "base64"; sha: string };
-type GitHubCreatedObject = { sha: string };
+export type GitHubBlob = { content: string; encoding: "base64"; sha: string };
+export type GitHubCreatedObject = { sha: string };
 
 export class AdminStorageError extends Error {
   constructor(message = "Não foi possível acessar o repositório de artigos.") {
@@ -109,7 +109,7 @@ function localSha(source: string) {
   return createHash("sha256").update(source).digest("hex");
 }
 
-async function githubRequest<T>(
+export async function githubRequest<T>(
   endpoint: string,
   init: RequestInit = {},
 ): Promise<T> {
@@ -162,12 +162,12 @@ async function githubRequest<T>(
   return (await response.json()) as T;
 }
 
-function githubRepoPath(endpoint: string) {
+export function githubRepoPath(endpoint: string) {
   const { owner, repo } = getGitHubContentConfig();
   return `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}${endpoint}`;
 }
 
-async function getGitHubHead() {
+export async function getGitHubHead() {
   const { branch } = getGitHubContentConfig();
   const ref = await githubRequest<GitHubRef>(
     githubRepoPath(`/git/ref/heads/${branch}`),
@@ -179,7 +179,7 @@ async function getGitHubHead() {
   return { commit, headSha: ref.object.sha };
 }
 
-async function getGitHubTree(treeSha: string) {
+export async function getGitHubTree(treeSha: string) {
   const tree = await githubRequest<GitHubTree>(
     githubRepoPath(`/git/trees/${treeSha}?recursive=1`),
   );
@@ -189,7 +189,7 @@ async function getGitHubTree(treeSha: string) {
   return tree;
 }
 
-async function getGitHubBlob(sha: string) {
+export async function getGitHubBlob(sha: string) {
   const blob = await githubRequest<GitHubBlob>(
     githubRepoPath(`/git/blobs/${sha}`),
   );
@@ -197,7 +197,10 @@ async function getGitHubBlob(sha: string) {
   return Buffer.from(blob.content.replace(/\n/g, ""), "base64").toString("utf8");
 }
 
-async function createGitHubBlob(content: string | Uint8Array, binary = false) {
+export async function createGitHubBlob(
+  content: string | Uint8Array,
+  binary = false,
+) {
   const body = binary
     ? { content: Buffer.from(content).toString("base64"), encoding: "base64" }
     : { content, encoding: "utf-8" };
@@ -453,7 +456,7 @@ async function saveLocalArticle(
   };
 }
 
-function shouldUseGitHubStorage() {
+export function shouldUseGitHubStorage() {
   if (hasGitHubContentConfig()) return true;
   if (process.env.NODE_ENV !== "production") return false;
   throw new AdminConfigurationError();

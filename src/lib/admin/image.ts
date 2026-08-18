@@ -24,9 +24,7 @@ function hasSupportedSignature(bytes: Uint8Array) {
   return isJpeg || isPng || isWebp;
 }
 
-export async function processSocialImage(file: File) {
-  if (file.size === 0) return undefined;
-
+async function validateImageUpload(file: File) {
   if (file.size > MAX_IMAGE_BYTES) {
     throw new Error("A imagem pode ter no máximo 3 MB.");
   }
@@ -40,6 +38,16 @@ export async function processSocialImage(file: File) {
     throw new Error("O conteúdo do arquivo não corresponde a uma imagem válida.");
   }
 
+  return input;
+}
+
+async function processValidatedImage(
+  input: Uint8Array,
+  width: number,
+  height: number,
+  resizeOptions: sharp.ResizeOptions,
+  quality: number,
+) {
   try {
     const pipeline = sharp(input, {
       failOn: "error",
@@ -56,12 +64,38 @@ export async function processSocialImage(file: File) {
     }
 
     const bytes = await pipeline
-      .resize(1200, 630, { fit: "cover", position: "attention" })
-      .webp({ quality: 84 })
+      .resize(width, height, resizeOptions)
+      .webp({ quality })
       .toBuffer();
 
     return new Uint8Array(bytes);
   } catch {
     throw new Error("Não foi possível processar esta imagem.");
   }
+}
+
+export async function processSocialImage(file: File) {
+  if (file.size === 0) return undefined;
+
+  const input = await validateImageUpload(file);
+  return processValidatedImage(
+    input,
+    1200,
+    630,
+    { fit: "cover", position: "attention" },
+    84,
+  );
+}
+
+export async function processCertificationBadge(file: File) {
+  if (file.size === 0) return undefined;
+
+  const input = await validateImageUpload(file);
+  return processValidatedImage(
+    input,
+    480,
+    480,
+    { fit: "contain", background: { r: 255, g: 255, b: 255, alpha: 0 } },
+    90,
+  );
 }

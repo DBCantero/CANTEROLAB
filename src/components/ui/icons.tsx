@@ -173,3 +173,22 @@ export function PencilIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function AwardIcon(props: IconProps) {
+  return (
+    <svg {...defaults} {...props}>
+      <circle cx="12" cy="8" r="6" />
+      <path d="m9 13.5-1.5 7L12 18l4.5 2.5-1.5-7" />
+    </svg>
+  );
+}
+
+export function TrashIcon(props: IconProps) {
+  return (
+    <svg {...defaults} {...props}>
+      <path d="M4 7h16" />
+      <path d="M6 7v13a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7" />
+      <path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+    </svg>
+  );
+}
