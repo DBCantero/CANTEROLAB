@@ -1,6 +1,6 @@
 import "server-only";
 
-import sharp from "sharp";
+import sharp, { type ResizeOptions } from "sharp";
 
 const MAX_IMAGE_BYTES = 3_000_000;
 const MAX_IMAGE_PIXELS = 20_000_000;
@@ -45,7 +45,7 @@ async function processValidatedImage(
   input: Uint8Array,
   width: number,
   height: number,
-  resizeOptions: sharp.ResizeOptions,
+  resizeOptions: ResizeOptions,
   quality: number,
 ) {
   try {
