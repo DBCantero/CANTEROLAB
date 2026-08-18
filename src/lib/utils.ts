@@ -4,6 +4,16 @@ export function cn(
   return classes.filter(Boolean).join(" ");
 }
 
+export function slugify(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLocaleLowerCase("pt-BR")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 90);
+}
+
 export function formatDate(date: string): string {
   const value = new Date(`${date}T00:00:00.000Z`);
   const parts = new Intl.DateTimeFormat("pt-BR", {

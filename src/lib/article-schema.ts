@@ -35,11 +35,11 @@ function isRealIsoDate(value: string) {
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
 
-const isoDateSchema = z
+export const isoDateSchema = z
   .string()
   .refine(isRealIsoDate, "Use uma data real no formato AAAA-MM-DD.");
 
-const safeImageSchema = z
+export const safeImageSchema = z
   .string()
   .trim()
   .max(240, "O caminho da imagem é muito longo.")

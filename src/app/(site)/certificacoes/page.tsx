@@ -1,6 +1,8 @@
+import Image from "next/image";
+
 import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/ui/page-intro";
-import { certifications } from "@/data/certifications";
+import { getAllCertifications } from "@/lib/certifications";
 import { createPageMetadata } from "@/lib/metadata";
 import { formatDate } from "@/lib/utils";
 
@@ -11,6 +13,8 @@ export const metadata = createPageMetadata({
 });
 
 export default function CertificationsPage() {
+  const certifications = getAllCertifications();
+
   return (
     <>
       <PageIntro
@@ -23,19 +27,30 @@ export default function CertificationsPage() {
           {certifications.length > 0 ? (
             <div className="content-list">
               {certifications.map((certification) => (
-                <article className="content-list-item" key={certification.title}>
-                  <div>
-                    <p className="eyebrow">{certification.issuer}</p>
-                    <h2>{certification.title}</h2>
-                    <p>{certification.description}</p>
-                    <span className="content-list-meta">
-                      <time dateTime={certification.date}>
-                        {formatDate(certification.date)}
-                      </time>
-                      {certification.credentialId
-                        ? ` · ID ${certification.credentialId}`
-                        : null}
-                    </span>
+                <article className="content-list-item" key={certification.id}>
+                  <div className="certification-summary">
+                    {certification.imagePath ? (
+                      <Image
+                        className="certification-badge"
+                        src={certification.imagePath}
+                        alt={`Selo: ${certification.title}`}
+                        width={64}
+                        height={64}
+                      />
+                    ) : null}
+                    <div>
+                      <p className="eyebrow">{certification.issuer}</p>
+                      <h2>{certification.title}</h2>
+                      <p>{certification.description}</p>
+                      <span className="content-list-meta">
+                        <time dateTime={certification.date}>
+                          {formatDate(certification.date)}
+                        </time>
+                        {certification.credentialId
+                          ? ` · ID ${certification.credentialId}`
+                          : null}
+                      </span>
+                    </div>
                   </div>
                   {certification.credentialUrl ? (
                     <a

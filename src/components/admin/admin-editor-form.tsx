@@ -7,22 +7,14 @@ import remarkGfm from "remark-gfm";
 
 import { saveArticleAction } from "@/app/admin/actions";
 import { ArrowUpRightIcon } from "@/components/ui/icons";
+import { FieldError } from "@/components/admin/field-error";
 import {
   ARTICLE_CATEGORIES,
   type ArticleCategorySlug,
 } from "@/lib/article-schema";
 import type { AdminArticle } from "@/lib/admin/types";
 import { INITIAL_ADMIN_ACTION_STATE } from "@/lib/admin/types";
-
-function slugify(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("pt-BR")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 90);
-}
+import { slugify } from "@/lib/utils";
 
 function calloutsAsMarkdown(value: string) {
   return value.replace(
@@ -33,15 +25,6 @@ function calloutsAsMarkdown(value: string) {
         .split("\n")
         .map((line) => `> ${line}`)
         .join("\n")}`,
-  );
-}
-
-function FieldError({ errors, id }: { errors?: string[]; id: string }) {
-  if (!errors?.length) return null;
-  return (
-    <span className="admin-field-error" id={id}>
-      {errors.join(" ")}
-    </span>
   );
 }
 
