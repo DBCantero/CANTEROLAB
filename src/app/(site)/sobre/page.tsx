@@ -52,17 +52,19 @@ const topics = [
 const socialLinks = [
   {
     label: "GitHub",
-    href: siteConfig.links.github,
+    href: siteConfig.links.github ?? "https://github.com/DBCantero",
     icon: <GithubIcon />,
   },
   {
     label: "LinkedIn",
-    href: siteConfig.links.linkedin,
+    href:
+      siteConfig.links.linkedin ??
+      "https://www.linkedin.com/in/alef-cantero-5b9916158",
     icon: <LinkedinIcon />,
   },
   {
     label: "Instagram",
-    href: siteConfig.links.instagram,
+    href: siteConfig.links.instagram ?? "https://www.instagram.com/alefcantero",
     icon: <InstagramIcon />,
   },
 ];
