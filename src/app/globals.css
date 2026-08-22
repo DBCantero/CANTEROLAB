@@ -1639,6 +1639,48 @@ button {
   color: var(--secondary);
 }
 
+.about-socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.35rem;
+}
+
+.about-socials a,
+.about-socials > span {
+  display: inline-flex;
+  width: 2.85rem;
+  height: 2.85rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--secondary);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.about-socials svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.about-socials a:hover {
+  border-color: var(--accent);
+  background: var(--surface-raised);
+  color: var(--foreground);
+  transform: translateY(-2px);
+}
+
+.about-socials .is-unconfigured {
+  color: var(--muted);
+}
+
 .about-story {
   max-width: 43rem;
 }

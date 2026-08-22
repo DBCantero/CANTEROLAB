@@ -51,6 +51,16 @@ export function LinkedinIcon(props: IconProps) {
   );
 }
 
+export function InstagramIcon(props: IconProps) {
+  return (
+    <svg {...defaults} {...props}>
+      <rect width="18" height="18" x="3" y="3" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function MailIcon(props: IconProps) {
   return (
     <svg {...defaults} {...props}>

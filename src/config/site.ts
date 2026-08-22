@@ -26,6 +26,7 @@ export const siteConfig = {
   links: {
     github: process.env.NEXT_PUBLIC_GITHUB_URL || null,
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || null,
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || null,
     email: process.env.NEXT_PUBLIC_EMAIL
       ? `mailto:${process.env.NEXT_PUBLIC_EMAIL}`
       : null,

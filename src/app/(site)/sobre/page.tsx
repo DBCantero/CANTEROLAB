@@ -2,8 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
-import { ArrowRightIcon } from "@/components/ui/icons";
+import {
+  ArrowRightIcon,
+  GithubIcon,
+  InstagramIcon,
+  LinkedinIcon,
+} from "@/components/ui/icons";
 import { PageIntro } from "@/components/ui/page-intro";
+import { siteConfig } from "@/config/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata = createPageMetadata({
@@ -43,6 +49,24 @@ const topics = [
   "Projetos reais",
 ];
 
+const socialLinks = [
+  {
+    label: "GitHub",
+    href: siteConfig.links.github,
+    icon: <GithubIcon />,
+  },
+  {
+    label: "LinkedIn",
+    href: siteConfig.links.linkedin,
+    icon: <LinkedinIcon />,
+  },
+  {
+    label: "Instagram",
+    href: siteConfig.links.instagram,
+    icon: <InstagramIcon />,
+  },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -69,6 +93,30 @@ export default function AboutPage() {
               <span>Autor do CanteroLab</span>
               <strong>Alef Cantero</strong>
               <p>Backend, dados e desenvolvimento.</p>
+              <nav className="about-socials" aria-label="Redes sociais de Alef Cantero">
+                {socialLinks.map((item) =>
+                  item.href ? (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`${item.label} de Alef Cantero — abre em nova aba`}
+                    >
+                      {item.icon}
+                    </a>
+                  ) : (
+                    <span
+                      className="is-unconfigured"
+                      key={item.label}
+                      role="img"
+                      aria-label={item.label}
+                    >
+                      {item.icon}
+                    </span>
+                  ),
+                )}
+              </nav>
             </figcaption>
           </figure>
 
