@@ -38,5 +38,15 @@
     "credentialUrl": "https://www.impacta.com.br/certificado/Q2VSRDUwcTlFVlBET2c2MnVlZXBZUT09",
     "description": "Conhecimentos Intermediários em SQL Server Modulo II",
     "imagePath": "/images/certifications/3735febf-e1cf-4abf-90a4-3b4ee8136cdf.webp"
+  },
+  {
+    "id": "4c904ec2-bf22-4616-8e29-eced7fc59516",
+    "title": "Programando com a Linguagem Python",
+    "issuer": "Impacta",
+    "date": "2024-02-10",
+    "credentialId": "2318700",
+    "credentialUrl": "https://www.impacta.com.br/certificado/V0p1Unh6QzNycWpZTEJkWXJxQ2xoQT09",
+    "description": "Conhecimentos básicos na linguagem Python",
+    "imagePath": "/images/certifications/4c904ec2-bf22-4616-8e29-eced7fc59516.webp"
   }
 ]
