@@ -14,7 +14,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const headerNav = siteConfig.nav.filter(
-  (item) => !["/certificacoes", "/recursos"].includes(item.href),
+  (item) => item.href !== "/recursos",
 );
 
 function isCurrentPath(pathname: string, href: string): boolean {

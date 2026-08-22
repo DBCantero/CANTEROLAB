@@ -1,14 +1,17 @@
 import Image from "next/image";
 
+import { ResourceList } from "@/components/resources/resource-list";
 import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/ui/page-intro";
+import { resources } from "@/data/resources";
 import { getAllCertifications } from "@/lib/certifications";
 import { createPageMetadata } from "@/lib/metadata";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = createPageMetadata({
   title: "Certificações",
-  description: "Certificações e trilhas de estudo concluídas por Alef Cantero.",
+  description:
+    "Certificações, cursos e trilhas de estudo recomendadas por Alef Cantero.",
   path: "/certificacoes",
 });
 
@@ -22,7 +25,7 @@ export default function CertificationsPage() {
         title="Certificações"
         description="Credenciais organizadas com contexto — o que cobrem, quando foram concluídas e onde verificar."
       />
-      <section className="listing-section">
+      <section className="listing-section certifications-section">
         <Container>
           {certifications.length > 0 ? (
             <div className="content-list">
@@ -75,6 +78,22 @@ export default function CertificationsPage() {
               </p>
             </div>
           )}
+        </Container>
+      </section>
+
+      <section className="study-recommendations-section">
+        <Container>
+          <div className="study-recommendations-heading">
+            <div>
+              <p className="page-kicker">Para continuar aprendendo</p>
+              <h2>Cursos e estudos recomendados</h2>
+            </div>
+            <p>
+              Uma seleção de trilhas e materiais para aprofundar os temas que
+              aparecem por aqui, do fundamento à aplicação prática.
+            </p>
+          </div>
+          <ResourceList headingLevel={3} resources={resources} />
         </Container>
       </section>
     </>

@@ -1454,7 +1454,8 @@ button {
   font-size: 0.72rem;
 }
 
-.editorial-empty h2 {
+.editorial-empty h2,
+.editorial-empty h3 {
   margin: 1.25rem 0 0;
   font-size: clamp(1.7rem, 4vw, 2.5rem);
   font-weight: 570;
@@ -1479,7 +1480,8 @@ button {
   padding-block: 2rem;
 }
 
-.content-list-item h2 {
+.content-list-item h2,
+.content-list-item h3 {
   margin: 0.7rem 0 0;
   font-size: clamp(1.35rem, 3vw, 1.8rem);
   font-weight: 580;
@@ -1530,6 +1532,41 @@ button {
   border-radius: 0.75rem;
   background: var(--surface);
   object-fit: contain;
+}
+
+.certifications-section {
+  min-height: 0;
+}
+
+.study-recommendations-section {
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 72%, var(--background));
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+}
+
+.study-recommendations-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: end;
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+.study-recommendations-heading h2 {
+  max-width: 16ch;
+  margin: 0.85rem 0 0;
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.study-recommendations-heading > p {
+  max-width: 37rem;
+  margin: 0;
+  color: var(--secondary);
+  line-height: 1.75;
 }
 
 .about-section {
@@ -2185,6 +2222,11 @@ button {
 
   .about-section-heading {
     grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+    gap: clamp(3rem, 7vw, 7rem);
+  }
+
+  .study-recommendations-heading {
+    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
     gap: clamp(3rem, 7vw, 7rem);
   }
 
