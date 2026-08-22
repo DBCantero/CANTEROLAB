@@ -18,5 +18,15 @@
     "credentialUrl": "https://www.impacta.com.br/certificado/ZG45SzNXK3BhZHorTHQrdS9UeTJ0Zz09",
     "description": "Conhecimentos Avançado em SQL Server Modulo III",
     "imagePath": "/images/certifications/018842b7-f99e-451f-bcb3-effb0535b573.webp"
+  },
+  {
+    "id": "c04a62a4-7bac-4b3f-a6aa-90281f105d61",
+    "title": "Modulo I SQL Server",
+    "issuer": "Impacta",
+    "date": "2020-09-20",
+    "credentialId": "2210660",
+    "credentialUrl": "https://www.impacta.com.br/certificado/M0sxU1BhbW9FRlFOVHZvNWlCQnVrdz09",
+    "description": "Conhecimentos Básicos em SQL Server",
+    "imagePath": "/images/certifications/c04a62a4-7bac-4b3f-a6aa-90281f105d61.webp"
   }
 ]
