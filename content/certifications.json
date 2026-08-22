@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "674e3e6b-c6c0-49d9-9140-5a7a2c167436",
+    "title": "Autoridade em SQL",
+    "issuer": "DevMedia",
+    "date": "2025-06-01",
+    "credentialId": "alef-21",
+    "credentialUrl": "https://www.devmedia.com.br/certificado/tecnologia/sql/alef-21",
+    "description": "Certificação na DevMedia com SQL Server",
+    "imagePath": "/images/certifications/674e3e6b-c6c0-49d9-9140-5a7a2c167436.webp"
+  }
+]
