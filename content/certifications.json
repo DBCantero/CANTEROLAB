@@ -8,5 +8,15 @@
     "credentialUrl": "https://www.devmedia.com.br/certificado/tecnologia/sql/alef-21",
     "description": "Certificação na DevMedia com SQL Server",
     "imagePath": "/images/certifications/674e3e6b-c6c0-49d9-9140-5a7a2c167436.webp"
+  },
+  {
+    "id": "018842b7-f99e-451f-bcb3-effb0535b573",
+    "title": "Programando em Python",
+    "issuer": "Impacta",
+    "date": "2024-02-10",
+    "credentialId": "2318700",
+    "credentialUrl": "https://www.impacta.com.br/certificado/V0p1Unh6QzNycWpZTEJkWXJxQ2xoQT09",
+    "description": "Conhecimentos basicos em Python",
+    "imagePath": "/images/certifications/018842b7-f99e-451f-bcb3-effb0535b573.webp"
   }
 ]
