@@ -28,5 +28,15 @@
     "credentialUrl": "https://www.impacta.com.br/certificado/M0sxU1BhbW9FRlFOVHZvNWlCQnVrdz09",
     "description": "Conhecimentos Básicos em SQL Server",
     "imagePath": "/images/certifications/c04a62a4-7bac-4b3f-a6aa-90281f105d61.webp"
+  },
+  {
+    "id": "3735febf-e1cf-4abf-90a4-3b4ee8136cdf",
+    "title": "Modulo II SQL Server",
+    "issuer": "Impacta",
+    "date": "2020-12-17",
+    "credentialId": "2210661",
+    "credentialUrl": "https://www.impacta.com.br/certificado/Q2VSRDUwcTlFVlBET2c2MnVlZXBZUT09",
+    "description": "Conhecimentos Intermediários em SQL Server Modulo II",
+    "imagePath": "/images/certifications/3735febf-e1cf-4abf-90a4-3b4ee8136cdf.webp"
   }
 ]
